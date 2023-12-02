@@ -1014,7 +1014,9 @@ static VALUE rb_mosquitto_client_connect_bind(VALUE obj, VALUE host, VALUE port,
 static void *rb_mosquitto_client_connect_async_nogvl(void *ptr)
 {
     struct nogvl_connect_args *args = ptr;
-    return mosquitto_connect_async(args->mosq, args->host, args->port, args->keepalive);
+    int result = mosquitto_connect_async(args->mosq, args->host, args->port, args->keepalive);
+
+    return (void *)(intptr_t)result;
 }
 
 /*
