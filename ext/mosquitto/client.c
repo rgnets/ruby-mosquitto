@@ -1494,7 +1494,8 @@ static VALUE rb_mosquitto_client_loop(VALUE obj, VALUE timeout, VALUE max_packet
 static void *rb_mosquitto_client_loop_forever_nogvl(void *ptr)
 {
     struct nogvl_loop_args *args = ptr;
-    return (VALUE)mosquitto_loop_forever(args->mosq, args->timeout, args->max_packets);
+    VALUE result = (VALUE)mosquitto_loop_forever(args->mosq, args->timeout, args->max_packets);
+    return (void *)result;
 }
 
 static void rb_mosquitto_client_loop_forever_ubf(void *ptr)
@@ -1564,7 +1565,8 @@ static VALUE rb_mosquitto_client_loop_forever(VALUE obj, VALUE timeout, VALUE ma
 
 static void *rb_mosquitto_client_loop_start_nogvl(void *ptr)
 {
-    return (VALUE)mosquitto_loop_start((struct mosquitto *)ptr);
+    VALUE result = (VALUE)mosquitto_loop_start((struct mosquitto *)ptr);
+    return (void *)result;
 }
 
 /*
@@ -1612,7 +1614,8 @@ static VALUE rb_mosquitto_client_loop_start(VALUE obj)
 static void *rb_mosquitto_client_loop_stop_nogvl(void *ptr)
 {
     struct nogvl_loop_stop_args *args = ptr;
-    return (VALUE)mosquitto_loop_stop(args->mosq, args->force);
+    VALUE result = (VALUE)mosquitto_loop_stop(args->mosq, args->force);
+    return (void *)result;
 }
 
 static void rb_mosquitto_client_reap_event_thread(mosquitto_client_wrapper *client)
@@ -1671,7 +1674,8 @@ static VALUE rb_mosquitto_client_loop_stop(VALUE obj, VALUE force)
 static void *rb_mosquitto_client_loop_read_nogvl(void *ptr)
 {
     struct nogvl_loop_args *args = ptr;
-    return (VALUE)mosquitto_loop_read(args->mosq, args->max_packets);
+    VALUE result = (VALUE)mosquitto_loop_read(args->mosq, args->max_packets);
+    return (void *)result;
 }
 
 /*
@@ -1725,7 +1729,8 @@ static VALUE rb_mosquitto_client_loop_read(VALUE obj, VALUE max_packets)
 static void *rb_mosquitto_client_loop_write_nogvl(void *ptr)
 {
     struct nogvl_loop_args *args = ptr;
-    return (VALUE)mosquitto_loop_write(args->mosq, args->max_packets);
+    VALUE result = (VALUE)mosquitto_loop_write(args->mosq, args->max_packets);
+    return (void *)result;
 }
 
 /*
@@ -1778,7 +1783,8 @@ static VALUE rb_mosquitto_client_loop_write(VALUE obj, VALUE max_packets)
 
 static void *rb_mosquitto_client_loop_misc_nogvl(void *ptr)
 {
-    return (VALUE)mosquitto_loop_misc((struct mosquitto *)ptr);
+    VALUE result = (VALUE)mosquitto_loop_misc((struct mosquitto *)ptr);
+    return (void *)result;
 }
 
 /*
