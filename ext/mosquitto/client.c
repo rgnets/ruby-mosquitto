@@ -1127,7 +1127,8 @@ static VALUE rb_mosquitto_client_connect_bind_async(VALUE obj, VALUE host, VALUE
 
 static void *rb_mosquitto_client_reconnect_nogvl(void *ptr)
 {
-    return mosquitto_reconnect((struct mosquitto *)ptr);
+    int result = mosquitto_reconnect((struct mosquitto *)ptr);
+    return (void *)(intptr_t)result;
 }
 
 /*
@@ -1165,7 +1166,8 @@ static VALUE rb_mosquitto_client_reconnect(VALUE obj)
 
 static void *rb_mosquitto_client_disconnect_nogvl(void *ptr)
 {
-    return (VALUE)mosquitto_disconnect((struct mosquitto *)ptr);
+    VALUE result = (VALUE)mosquitto_disconnect((struct mosquitto *)ptr);
+     return (void *)result;
 }
 
 /*
@@ -1204,7 +1206,8 @@ static VALUE rb_mosquitto_client_disconnect(VALUE obj)
 static void *rb_mosquitto_client_publish_nogvl(void *ptr)
 {
     struct nogvl_publish_args *args = ptr;
-    return (VALUE)mosquitto_publish(args->mosq, args->mid, args->topic, args->payloadlen, args->payload, args->qos, args->retain);
+    VALUE result = (VALUE)mosquitto_publish(args->mosq, args->mid, args->topic, args->payloadlen, args->payload, args->qos, args->retain);
+    return (void *)result;
 }
 
 /*
@@ -1277,7 +1280,8 @@ static VALUE rb_mosquitto_client_publish(VALUE obj, VALUE mid, VALUE topic, VALU
 static void *rb_mosquitto_client_subscribe_nogvl(void *ptr)
 {
     struct nogvl_subscribe_args *args = ptr;
-    return (VALUE)mosquitto_subscribe(args->mosq, args->mid, args->subscription, args->qos);
+    VALUE result = (VALUE)mosquitto_subscribe(args->mosq, args->mid, args->subscription, args->qos);
+    return (void *)result;
 }
 
 /*
@@ -1337,7 +1341,8 @@ static VALUE rb_mosquitto_client_subscribe(VALUE obj, VALUE mid, VALUE subscript
 static void *rb_mosquitto_client_unsubscribe_nogvl(void *ptr)
 {
     struct nogvl_subscribe_args *args = ptr;
-    return (VALUE)mosquitto_unsubscribe(args->mosq, args->mid, args->subscription);
+    VALUE result = (VALUE)mosquitto_unsubscribe(args->mosq, args->mid, args->subscription);
+    return (void *)result;
 }
 
 /*
@@ -1413,7 +1418,8 @@ static VALUE rb_mosquitto_client_socket(VALUE obj)
 static void *rb_mosquitto_client_loop_nogvl(void *ptr)
 {
     struct nogvl_loop_args *args = ptr;
-    return (VALUE)mosquitto_loop(args->mosq, args->timeout, args->max_packets);
+    VALUE result = (VALUE)mosquitto_loop(args->mosq, args->timeout, args->max_packets);
+    return (void *)result;
 }
 
 /*
